@@ -1,8 +1,9 @@
+using System.Collections.Concurrent;
 namespace LendingPlatform
 {
     public class LoanApplicationStorageClient
     {
-        private Dictionary<Guid, LoanApplicationResult> _applicationResults = new Dictionary<Guid, LoanApplicationResult>();
+        private ConcurrentDictionary<Guid, LoanApplicationResult> _applicationResults = new ConcurrentDictionary<Guid, LoanApplicationResult>();
 
         public void Add(LoanApplicationResult applicationResult)
         {
@@ -12,7 +13,7 @@ namespace LendingPlatform
             }
             else
             {
-                _applicationResults.Add(applicationResult.Application.ApplicationId, applicationResult);
+                _applicationResults.TryAdd(applicationResult.Application.ApplicationId, applicationResult);
             }
         }
 
